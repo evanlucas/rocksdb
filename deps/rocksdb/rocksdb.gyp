@@ -154,6 +154,15 @@
             ]
           , 'libraries': []
           , 'ccflags': []
+          , 'conditions': [
+              ['target_arch!="arm64"', {
+                'xcode_settings': {
+                  'OTHER_CPLUSPLUSFLAGS+': [
+                    '-march=native',
+                  ]
+                }
+              }]
+            ]
           , 'xcode_settings': {
                 'WARNING_CFLAGS': [
                     '-Wno-sign-compare'
@@ -164,7 +173,7 @@
                     '-mmacosx-version-min=10.8'
                   , '-std=c++11'
                   , '-stdlib=libc++'
-                  , '-march=native'
+                  # , '-march=native'
                   , '-fno-omit-frame-pointer'
                   , '-momit-leaf-frame-pointer'
                 ]
