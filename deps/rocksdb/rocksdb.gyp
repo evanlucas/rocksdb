@@ -66,8 +66,10 @@
         }, { # OS != "win"
             'sources': [
                 'rocksdb/port/port_posix.cc'
+              , 'rocksdb/env/composite_env.cc'
               , 'rocksdb/env/env_posix.cc'
               , 'rocksdb/env/fs_posix.cc'
+              , 'rocksdb/env/fs_remap.cc'
               , 'rocksdb/env/io_posix.cc'
             ]
           , 'defines': [
@@ -150,7 +152,9 @@
             'defines': [
                 'OS_MACOSX=1',
                 'ROCKSDB_LIB_IO_POSIX=1',
-                'ROCKSDB_BACKTRACE=1'
+                'ROCKSDB_BACKTRACE=1',
+                'NIOSTATS_CONTEXT',
+                'NPERF_CONTEXT'
             ]
           , 'libraries': []
           , 'ccflags': []
@@ -186,10 +190,12 @@
     ]
   , 'sources': [
         'rocksdb/cache/cache.cc'
+      , 'rocksdb/cache/cache_entry_roles.cc'
       , 'rocksdb/cache/clock_cache.cc'
       , 'rocksdb/cache/lru_cache.cc'
       , 'rocksdb/cache/sharded_cache.cc'
       , 'rocksdb/db/arena_wrapped_db_iter.cc'
+      , 'rocksdb/db/blob/blob_fetcher.cc'
       , 'rocksdb/db/blob/blob_file_addition.cc'
       , 'rocksdb/db/blob/blob_file_builder.cc'
       , 'rocksdb/db/blob/blob_file_cache.cc'
@@ -202,7 +208,6 @@
       , 'rocksdb/db/builder.cc'
       , 'rocksdb/db/c.cc'
       , 'rocksdb/db/column_family.cc'
-      , 'rocksdb/db/compacted_db_impl.cc'
       , 'rocksdb/db/compaction/compaction.cc'
       , 'rocksdb/db/compaction/compaction_iterator.cc'
       , 'rocksdb/db/compaction/compaction_picker.cc'
@@ -213,6 +218,7 @@
       , 'rocksdb/db/compaction/sst_partitioner.cc'
       , 'rocksdb/db/convenience.cc'
       , 'rocksdb/db/db_filesnapshot.cc'
+      , 'rocksdb/db/db_impl/compacted_db_impl.cc'
       , 'rocksdb/db/db_impl/db_impl.cc'
       , 'rocksdb/db/db_impl/db_impl_write.cc'
       , 'rocksdb/db/db_impl/db_impl_compaction_flush.cc'
@@ -274,6 +280,7 @@
       , 'rocksdb/file/file_prefetch_buffer.cc'
       , 'rocksdb/file/file_util.cc'
       , 'rocksdb/file/filename.cc'
+      , 'rocksdb/file/line_file_reader.cc'
       , 'rocksdb/file/random_access_file_reader.cc'
       , 'rocksdb/file/read_write_util.cc'
       , 'rocksdb/file/readahead_raf.cc'
@@ -286,6 +293,7 @@
       , 'rocksdb/memory/arena.cc'
       , 'rocksdb/memory/concurrent_arena.cc'
       , 'rocksdb/memory/jemalloc_nodump_allocator.cc'
+      , 'rocksdb/memory/memkind_kmem_allocator.cc'
       , 'rocksdb/memtable/alloc_tracker.cc'
       , 'rocksdb/memtable/hash_linklist_rep.cc'
       , 'rocksdb/memtable/hash_skiplist_rep.cc'
@@ -303,6 +311,7 @@
       , 'rocksdb/monitoring/statistics.cc'
       , 'rocksdb/monitoring/thread_status_impl.cc'
       , 'rocksdb/monitoring/thread_status_updater.cc'
+      , 'rocksdb/monitoring/thread_status_updater_debug.cc'
       , 'rocksdb/monitoring/thread_status_util.cc'
       , 'rocksdb/monitoring/thread_status_util_debug.cc'
       , 'rocksdb/options/cf_options.cc'
@@ -386,11 +395,13 @@
       , 'rocksdb/util/compression_context_cache.cc'
       , 'rocksdb/util/concurrent_task_limiter_impl.cc'
       , 'rocksdb/util/crc32c.cc'
+      , 'rocksdb/util/crc32c_arm64.cc'
       , 'rocksdb/util/dynamic_bloom.cc'
       , 'rocksdb/util/hash.cc'
       , 'rocksdb/util/murmurhash.cc'
       , 'rocksdb/util/random.cc'
       , 'rocksdb/util/rate_limiter.cc'
+      , 'rocksdb/util/ribbon_config.cc'
       , 'rocksdb/util/slice.cc'
       , 'rocksdb/util/file_checksum_helper.cc'
       , 'rocksdb/util/status.cc'
@@ -417,6 +428,7 @@
 
       , 'rocksdb/utilities/checkpoint/checkpoint_impl.cc'
       , 'rocksdb/utilities/compaction_filters/remove_emptyvalue_compactionfilter.cc'
+      , 'rocksdb/utilities/convenience/info_log_finder.cc'
       , 'rocksdb/utilities/debug.cc'
 
       # Unused
