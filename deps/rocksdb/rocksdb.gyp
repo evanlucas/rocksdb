@@ -93,7 +93,8 @@
       , ['OS == "linux"', {
             'defines': [
                 'OS_LINUX=1',
-                'ROCKSDB_LIB_IO_POSIX=1'
+                'ROCKSDB_LIB_IO_POSIX=1',
+                'NIOSTATS_CONTEXT',
             ]
           , 'libraries': [
                 '-lpthread'
