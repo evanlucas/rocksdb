@@ -833,7 +833,7 @@ NAPI_METHOD(db_open) {
 
   uint32_t cacheSize = Uint32Property(env, options, "cacheSize", 0);
   uint32_t writeBufferSize = Uint32Property(env, options , "writeBufferSize" , 4 << 20);
-  uint32_t blockSize = Uint32Property(env, options, "blockSize", 16384);
+  uint32_t blockSize = Uint32Property(env, options, "blockSize", 4096);
   uint32_t maxOpenFiles = Uint32Property(env, options, "maxOpenFiles", 1000);
   uint32_t blockRestartInterval = Uint32Property(env, options,
                                                  "blockRestartInterval", 16);
