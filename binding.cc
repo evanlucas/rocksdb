@@ -762,6 +762,11 @@ struct OpenWorker final : public BaseWorker {
     options_.max_open_files = maxOpenFiles;
     options_.max_log_file_size = maxFileSize;
     options_.paranoid_checks = false;
+    options_.level_compaction_dynamic_level_bytes = true;
+    options_.max_background_compactions = 1;
+    options_.max_background_flushes = 2;
+    options_.bytes_per_sync = 1048576;
+    options_.compaction_style = rocksdb::CompactionStyle::kCompactionStyleFIFO;
 
     if (infoLogLevel.size() > 0) {
       rocksdb::InfoLogLevel lvl;
@@ -828,7 +833,7 @@ NAPI_METHOD(db_open) {
 
   uint32_t cacheSize = Uint32Property(env, options, "cacheSize", 8 << 20);
   uint32_t writeBufferSize = Uint32Property(env, options , "writeBufferSize" , 4 << 20);
-  uint32_t blockSize = Uint32Property(env, options, "blockSize", 4096);
+  uint32_t blockSize = Uint32Property(env, options, "blockSize", 16384);
   uint32_t maxOpenFiles = Uint32Property(env, options, "maxOpenFiles", 1000);
   uint32_t blockRestartInterval = Uint32Property(env, options,
                                                  "blockRestartInterval", 16);
