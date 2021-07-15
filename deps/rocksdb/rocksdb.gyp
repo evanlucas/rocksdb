@@ -96,13 +96,19 @@
                 'ROCKSDB_LIB_IO_POSIX=1',
                 'NIOSTATS_CONTEXT',
                 'NPERF_CONTEXT',
+                'ROCKSDB_JEMALLOC',
+                'JEMALLOC_NO_DEMANGLE',
             ]
           , 'libraries': [
-                '-lpthread'
+                '-lpthread',
+                '<!@(pkg-config jemalloc --libs)',
             ]
           , 'ccflags': [
                 '-pthread'
                 '-fexceptions'
+            ]
+          , 'include_dirs+': [
+              '<!@(pkg-config jemalloc --cflags-only-I | sed s/-I//g)'
             ]
           , 'cflags!': [ '-fno-exceptions' ]
           , 'cflags_cc!': [ '-fno-exceptions' ]
@@ -156,10 +162,17 @@
                 'ROCKSDB_LIB_IO_POSIX=1',
                 'ROCKSDB_BACKTRACE=1',
                 'NIOSTATS_CONTEXT',
-                'NPERF_CONTEXT'
+                'NPERF_CONTEXT',
+                'ROCKSDB_JEMALLOC',
+                'JEMALLOC_NO_DEMANGLE',
             ]
-          , 'libraries': []
+          , 'libraries': [
+              '<!@(pkg-config jemalloc --libs)',
+            ]
           , 'ccflags': []
+          , 'include_dirs+': [
+              '<!@(pkg-config jemalloc --cflags-only-I | sed s/-I//g)'
+            ]
           , 'conditions': [
               ['target_arch!="arm64"', {
                 'xcode_settings': {
