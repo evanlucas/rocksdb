@@ -766,6 +766,7 @@ struct OpenWorker final : public BaseWorker {
     options_.level_compaction_dynamic_level_bytes = true;
     options_.max_background_compactions = 1;
     options_.max_background_flushes = 1;
+
     // options_.bytes_per_sync = 1048576;
     options_.compaction_pri = rocksdb::CompactionPri::kMinOverlappingRatio;
     options_.table_properties_collector_factories.emplace_back(
@@ -837,7 +838,7 @@ NAPI_METHOD(db_open) {
   std::string infoLogLevel = StringProperty(env, options, "infoLogLevel");
 
   uint32_t cacheSize = Uint32Property(env, options, "cacheSize", 8 << 20);
-  uint32_t writeBufferSize = Uint32Property(env, options , "writeBufferSize" , 4 << 20);
+  uint32_t writeBufferSize = Uint32Property(env, options , "writeBufferSize" , 1 << 20);
   uint32_t blockSize = Uint32Property(env, options, "blockSize", 4096);
   uint32_t maxOpenFiles = Uint32Property(env, options, "maxOpenFiles", 1000);
   uint32_t blockRestartInterval = Uint32Property(env, options,
