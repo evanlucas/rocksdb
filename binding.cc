@@ -13,6 +13,7 @@
 #include <rocksdb/env.h>
 #include <rocksdb/options.h>
 #include <rocksdb/table.h>
+#include <rocksdb/utilities/table_properties_collectors.h>
 
 namespace leveldb = rocksdb;
 
@@ -765,8 +766,11 @@ struct OpenWorker final : public BaseWorker {
     options_.level_compaction_dynamic_level_bytes = true;
     options_.max_background_compactions = 1;
     options_.max_background_flushes = 2;
-    options_.bytes_per_sync = 1048576;
+    // options_.bytes_per_sync = 1048576;
     options_.compaction_pri = rocksdb::CompactionPri::kMinOverlappingRatio;
+    options_.table_properties_collector_factories.emplace_back(
+      rocksdb::NewCompactOnDeletionCollectorFactory(100, 90, 0.5)
+    );
 
     if (infoLogLevel.size() > 0) {
       rocksdb::InfoLogLevel lvl;
